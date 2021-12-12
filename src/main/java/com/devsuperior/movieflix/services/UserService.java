@@ -1,7 +1,5 @@
 package com.devsuperior.movieflix.services;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +25,9 @@ public class UserService implements UserDetailsService{
 	private UserRepository repository;
 	
 	@Transactional(readOnly = true)
-	public UserDTO findById(Long id) {
-		authService.validateSelfOrAdmin(id);
-		Optional<User> user = repository.findById(id);
-		User result = user.orElseThrow(()-> new RuntimeException("User Not Found"));
-		return new UserDTO(result);
+	public UserDTO selfProfile() {
+		User user = authService.authenticated();
+		return new UserDTO(user);
 	}
 	
 	@Override
